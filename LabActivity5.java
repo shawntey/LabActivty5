@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class LabActivity5 {
     public static void main(){
         BinarySearchTree tree = new BinarySearchTree();
-
         Scanner sc = new Scanner (System.in);
         while (true) {
             line(50);
@@ -18,23 +17,23 @@ public class LabActivity5 {
             System.out.print("\n\n[ T ] Traverse");
             System.out.print("\n\n[ Q ] Quit");
             System.out.print("\n\nEnter First Letter of Your Choice: ");
-            options(sc);
+            options(sc, tree);
         }
     }
 
-    public static void options (Scanner sc){
-        if (!Character.isLetter(sc.next().charAt(0))) {
-            sc.nextLine();
+    public static void options (Scanner sc, BinarySearchTree tree){
+        String input = sc.nextLine().trim();
+        if (input.isEmpty() || !Character.isLetter(input.charAt(0))) {
             System.out.println("\nInvalid input! Only letters 'S', 'I', 'D', 'T', and 'Q' are accepted.\n");
             pause(sc);
             return;
         }
-        char choice = sc.next().charAt(0);
-        sc.nextLine();
+        char choice = input.charAt(0);
         switch (choice){
             case 'S':
             case 's':
-                show(sc);
+                tree.show();
+                pause(sc);
                 break;
             case 'I':
             case 'i':
@@ -44,7 +43,6 @@ public class LabActivity5 {
                 break;
             case 'T':
             case 't':
-                traverse(sc);
                 break;
             case 'Q':
             case 'q':
@@ -54,12 +52,6 @@ public class LabActivity5 {
             default:
                 System.out.println("\nInvalid input! Only letters 'S', 'I', 'D', 'T', and 'Q' are accepted.\n");
                 pause(sc);
-        }
-    }
-
-    public static void show(){
-        if(root == null){
-            System.out.println("The tree is empty!");
         }
     }
 
@@ -85,7 +77,7 @@ public class LabActivity5 {
     }
 
     public static void pause(Scanner sc) {
-        System.out.print("Press any key to continue...");
+        System.out.print("\nPress any key to continue...");
         sc.nextLine();
         System.out.println("\u000C");
     }
@@ -102,6 +94,74 @@ class Node{
 
 class BinarySearchTree{
     Node root;
+    private int counter;
 
+    public void show(){
+        if (root == null){
+            System.out.println("The tree is empty!\n");
+            return;
+        }
 
+        int h = height(root);
+        int unit = 4;
+
+        for (int level = 1; level <= h; level++) {
+            int spacing = (int) Math.pow(2, h - level) * unit;
+
+        System.out.print(" ".repeat((spacing - unit) / 2));
+            printLevel(root, level, spacing - unit);
+            System.out.println();
+
+        if (level < h) {
+                printBranches(root, level, spacing, unit);
+                System.out.println();
+            }
+        }
+    }
+
+        private void printLevel(Node n, int level, int gap) {
+        if (level == 1) {
+            if (n == null) {
+                System.out.print("    " + " ".repeat(gap)); 
+            } else {
+                System.out.print(String.format("%-4d", n.data) + " ".repeat(gap));
+            }
+            return;
+        }
+
+        Node left = null, right = null;
+        if (n != null) {
+            left = n.left;
+            right = n.right;
+        }
+        printLevel(left, level - 1, gap);
+        printLevel(right, level - 1, gap);
+    }
+
+    private void printBranches(Node n, int level, int spacing, int unit) {
+        if (level == 1) {
+            char[] slot = new char[spacing];
+            java.util.Arrays.fill(slot, ' ');
+            if (n != null) {
+                int p = (spacing - unit) / 2;      
+                if (n.left != null)  slot[p - spacing / 8] = '/';
+                if (n.right != null) slot[p + spacing / 8 + 1] = '\\';
+            }
+            System.out.print(new String(slot));
+            return;
+        }
+        Node left = null, right = null;
+        if (n != null) {
+            left = n.left;
+            right = n.right;
+        }
+        printBranches(left, level - 1, spacing, unit);
+        printBranches(right, level - 1, spacing, unit);
+    }
+
+    private int height(Node n) {
+        if (n == null) return 0;
+        return 1 + Math.max(height(n.left), height(n.right));
+    }
 }
+
