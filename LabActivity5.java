@@ -6,7 +6,7 @@ public class LabActivity5 {
         Scanner sc = new Scanner (System.in);
         while (true) {
             line(50);
-            center("Stack Application Conversion", 50);
+            center("BST Tree Operations", 50);
             System.out.println();
             center("Menu", 50);
             System.out.println();
@@ -32,11 +32,14 @@ public class LabActivity5 {
         switch (choice){
             case 'S':
             case 's':
+                System.out.println("\u000C");
+                header("Show", 50);
                 tree.show();
                 pause(sc);
                 break;
             case 'I':
             case 'i':
+                insertOption(sc, tree);
                 break;
             case 'D':
             case 'd':
@@ -54,7 +57,43 @@ public class LabActivity5 {
                 pause(sc);
         }
     }
+    
+    public static void insertOption(Scanner sc, BinarySearchTree tree) {
+        System.out.println("\u000C");
+        header("Insert", 50);
+        boolean stop = false;
 
+        while (!stop) {
+            System.out.print("\nEnter Value to Insert or -99 to terminate the insert operation: ");
+            String line = sc.nextLine().trim();
+                if (line.isEmpty()) {
+                    System.out.println("Please enter at least one value.");
+                    continue;
+                }
+            String[] values = line.split("\\s+");
+            
+            for (String v : values) {
+                try {
+                    int val = Integer.parseInt(v);
+                    if (val == -99) {
+                        stop = true;
+                        break;
+                    }
+                    if (tree.contains(val)) {
+                        System.out.println(val + " is already in the tree. Try again.");
+                    } else {
+                        tree.insert(new Node(val));
+                        System.out.println(val + " successfully inserted.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println(v + " is not a whole number. Try again.");
+                }
+            }
+        }
+        System.out.println();
+        pause(sc);
+    }
+    
     public static void header (String text, int width) {
         String line = "-".repeat(width);
         int totalpadding = Math.max(width - text.length(), 0);
@@ -108,17 +147,46 @@ class BinarySearchTree{
         for (int level = 1; level <= h; level++) {
             int spacing = (int) Math.pow(2, h - level) * unit;
 
-        System.out.print(" ".repeat((spacing - unit) / 2));
+            System.out.print(" ".repeat((spacing - unit) / 2));
             printLevel(root, level, spacing - unit);
             System.out.println();
 
-        if (level < h) {
+            if (level < h) {
                 printBranches(root, level, spacing, unit);
                 System.out.println();
             }
         }
     }
-
+    
+    public void insert(Node n) {
+        root = insertHelper(root, n);
+    }
+    
+    private Node insertHelper(Node root, Node n) {
+        int data = n.data;
+        
+        if(root == null) {
+            root = n;
+            return root;
+        } else if (data < root.data) {
+            root.left = insertHelper(root.left, n); 
+        } else {
+            root.right = insertHelper(root.right, n);
+        }
+        return root;
+    }
+    
+    public boolean contains(int data) {
+        Node current = root;
+            while (current != null) {
+                if (data == current.data) 
+                return true;
+                
+                current = (data < current.data) ? current.left : current.right;
+            }
+        return false;
+    }   
+    
         private void printLevel(Node n, int level, int gap) {
         if (level == 1) {
             if (n == null) {
@@ -164,4 +232,3 @@ class BinarySearchTree{
         return 1 + Math.max(height(n.left), height(n.right));
     }
 }
-
