@@ -5,6 +5,7 @@ public class LabActivity5 {
         BinarySearchTree tree = new BinarySearchTree();
         Scanner sc = new Scanner (System.in);
         while (true) {
+            System.out.println("\u000C");
             line(50);
             center("BST Tree Operations", 50);
             System.out.println();
@@ -46,6 +47,7 @@ public class LabActivity5 {
                 break;
             case 'T':
             case 't':
+                BinarySearchTree.traverse(sc, tree);
                 break;
             case 'Q':
             case 'q':
@@ -175,7 +177,71 @@ class BinarySearchTree{
         }
         return root;
     }
-    
+
+    public static void traverse(Scanner sc, BinarySearchTree tree){
+        while (true) {
+            System.out.println("\u000C");
+            LabActivity5.line(50);
+            LabActivity5.center("Tree Traversal", 50);
+            System.out.println();
+            LabActivity5.center("Menu", 50);
+            System.out.println();
+            LabActivity5.line(50);
+            System.out.print("\n[ 1 ] InOrder");
+            System.out.print("\n\n[ 2 ] PreOrder");
+            System.out.print("\n\n[ 3 ] PostOrder");
+            System.out.print("\n\n[ 4 ] Exit");
+            System.out.print("\n\nEnter Your Choice: ");
+            traverseOptions(sc, tree);
+        }
+    }
+
+    public static void traverseOptions(Scanner sc, BinarySearchTree tree){
+        if (!sc.hasNextInt()) {
+            System.out.println("\nInvalid input! Only integers 1-4 are accepted.\n");
+            LabActivity5.pause(sc);
+            return;
+        }
+        int traverseInput = sc.nextInt();
+        switch (traverseInput){
+            case 1:
+                System.out.println("\u000C");
+                LabActivity5.header("InOrder", 50);
+                inOrder(sc, tree);
+                sc.nextLine();
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                LabActivity5.main();
+                break;
+            default:
+                System.out.println("\nInvalid input! Only integers 1-4 are accepted.\n");
+                LabActivity5.pause(sc);
+        }
+    }
+
+    public static void inOrder(Scanner sc, BinarySearchTree tree){
+        if (tree.root == null){
+            System.out.println("The tree is empty!");
+            LabActivity5.pause(sc);
+        }
+        else{
+            inOrderHelper(tree.root);
+            LabActivity5.pause(sc);
+        } 
+    }
+
+    private static void inOrderHelper(Node root){
+        if(root != null){
+            inOrderHelper(root.left);
+            System.out.println(root.data);
+            inOrderHelper(root.right);
+        }
+    }
+
     public boolean contains(int data) {
         Node current = root;
             while (current != null) {
