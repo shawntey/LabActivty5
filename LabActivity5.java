@@ -179,7 +179,8 @@ class BinarySearchTree{
     }
 
     public static void traverse(Scanner sc, BinarySearchTree tree){
-        while (true) {
+        boolean back = false;
+        while (!back) {
             System.out.println("\u000C");
             LabActivity5.line(50);
             LabActivity5.center("Tree Traversal", 50);
@@ -192,34 +193,28 @@ class BinarySearchTree{
             System.out.print("\n\n[ 3 ] PostOrder");
             System.out.print("\n\n[ 4 ] Exit");
             System.out.print("\n\nEnter Your Choice: ");
-            traverseOptions(sc, tree);
+            back = traverseOptions(sc, tree);
         }
     }
 
-    public static void traverseOptions(Scanner sc, BinarySearchTree tree){
-        if (!sc.hasNextInt()) {
-            System.out.println("\nInvalid input! Only integers 1-4 are accepted.\n");
-            LabActivity5.pause(sc);
-            return;
-        }
-        int traverseInput = sc.nextInt();
+    public static boolean traverseOptions(Scanner sc, BinarySearchTree tree){
+        String traverseInput = sc.nextLine().trim();
         switch (traverseInput){
-            case 1:
+            case "1":
                 System.out.println("\u000C");
                 LabActivity5.header("InOrder", 50);
                 inOrder(sc, tree);
-                sc.nextLine();
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            case 4:
-                LabActivity5.main();
-                break;
+                return false;
+            case "2":
+                return false;
+            case "3":
+                return false;
+            case "4":
+                return true;
             default:
                 System.out.println("\nInvalid input! Only integers 1-4 are accepted.\n");
                 LabActivity5.pause(sc);
+                return false;
         }
     }
 
