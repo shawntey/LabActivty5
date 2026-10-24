@@ -82,10 +82,10 @@ public class LabActivity5 {
                         break;
                     }
                     if (tree.contains(val)) {
-                        System.out.println(val + " is already in the tree. Try again.");
+                        System.out.println(val + " is already in the tree.");
                     } else {
                         tree.insert(new Node(val));
-                        System.out.println(val + " successfully inserted.");
+                        System.out.println(val + " successfully inserted!");
                     }
                 } catch (NumberFormatException e) {
                     System.out.println(v + " is not a whole number. Try again.");
@@ -201,11 +201,10 @@ class BinarySearchTree{
         String traverseInput = sc.nextLine().trim();
         switch (traverseInput){
             case "1":
-                System.out.println("\u000C");
-                LabActivity5.header("InOrder", 50);
-                inOrder(sc, tree);
+                traverseOperations(sc, tree, "InOrder", 1);
                 return false;
             case "2":
+                traverseOperations(sc, tree, "PreOrder", 2);
                 return false;
             case "3":
                 return false;
@@ -217,26 +216,42 @@ class BinarySearchTree{
                 return false;
         }
     }
-
-    public static void inOrder(Scanner sc, BinarySearchTree tree){
-        if (tree.root == null){
+    
+     private static void traverseOperations(Scanner sc, BinarySearchTree tree, String head, int chosenTraversal) {
+        System.out.println("\u000C");
+        LabActivity5.header(head, 50);
+        
+        if(tree.root == null){
             System.out.println("The tree is empty!");
-            LabActivity5.pause(sc);
-        }
-        else{
+        } else if (chosenTraversal == 1) {
             inOrderHelper(tree.root);
+            System.out.println();
+            LabActivity5.pause(sc);
+        } else if (chosenTraversal == 2) {
+            preOrderHelper(tree.root);
+            System.out.println();
+            LabActivity5.pause(sc);
+        } else {
             LabActivity5.pause(sc);
         } 
     }
-
+    
     private static void inOrderHelper(Node root){
         if(root != null){
             inOrderHelper(root.left);
-            System.out.println(root.data);
+            System.out.printf("%6s", root.data + "  ");
             inOrderHelper(root.right);
         }
     }
 
+    private static void preOrderHelper(Node root){
+        if(root != null){
+            System.out.printf("%6s", root.data + "  ");
+            preOrderHelper(root.left);
+            preOrderHelper(root.right);
+        }
+    }
+    
     public boolean contains(int data) {
         Node current = root;
             while (current != null) {
